@@ -38,5 +38,6 @@ module "ec2" {
   public_subnet_id  = module.vpc.public_subnet_id
   private_subnet_id = module.vpc.private_subnet_id
   public_sg_id      = module.security_groups.public_sg_id
+  key_name          = var.key_name
   private_sg_id     = module.security_groups.private_sg_id
 }

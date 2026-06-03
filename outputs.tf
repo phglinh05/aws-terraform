@@ -1,3 +1,8 @@
+output "vpc_id" {
+  description = "ID cua VPC"
+  value       = module.vpc.vpc_id
+}
+
 output "public_ec2_ip" {
   description = "IP Public cua Bastion Host"
   value       = module.ec2.public_instance_ip

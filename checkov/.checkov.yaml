@@ -1,4 +1,2 @@
 skip-check:
-  - CKV_AWS_163
-  - CKV_AWS_5
-  - CKV_AWS_130
+  - CKV_AWS_130   # subnet public IP - Bastion Host can public IP de SSH tu ngoai vao
