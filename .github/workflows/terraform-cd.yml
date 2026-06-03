@@ -84,6 +84,7 @@ jobs:
         run: |
           terraform plan \
             -var="ip=${{ secrets.IP }}" \
+            -var="key_name=${{ secrets.KEY_NAME }}" \
             -no-color \
             -input=false \
             -out=tfplan

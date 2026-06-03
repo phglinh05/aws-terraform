@@ -88,11 +88,12 @@ jobs:
         run: |
           terraform plan \
             -var="ip=${{ secrets.IP }}" \
+            -var="key_name=${{ secrets.KEY_NAME }}" \
             -no-color \
             -input=false \
             -out=tfplan \
           2>&1 | tee plan_output.txt
-        continue-on-error: true
+          exit ${PIPESTATUS[0]}
 
       - name: Post Plan to PR
         uses: actions/github-script@v7
@@ -125,7 +126,3 @@ jobs:
               repo: context.repo.repo,
               body: body
             });
-
-      - name: Fail if plan failed
-        if: steps.plan.outcome == 'failure'
-        run: exit 1
