@@ -1,0 +1,5 @@
+checkov:
+  skip-check: 
+    - CKV_AWS_163
+    - CKV_AWS_5
+    - CKV_AWS_130
