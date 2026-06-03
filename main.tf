@@ -16,7 +16,7 @@ module "vpc" {
 }
 
 module "nat_gateway" {
-    source = "./modules/nat_gateway"
+    source = "./modules/nat-gateway"
     public_subnet_id = module.vpc.public_subnet_id
 }
 
@@ -28,7 +28,7 @@ resource "aws_route" "private_nat_route" {
 }
 
 module "security_groups" {
-    source = "./modules/security_groups"
+    source = "./modules/security-groups"
     vpc_id = module.vpc.vpc_id
     ip = var.ip
 }
