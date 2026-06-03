@@ -55,6 +55,7 @@ jobs:
           terraform plan \
             -destroy \
             -var="ip=${{ secrets.IP }}" \
+            -var="key_name=${{ secrets.KEY_NAME }}" \
             -no-color \
             -out=tfplan-destroy
 
