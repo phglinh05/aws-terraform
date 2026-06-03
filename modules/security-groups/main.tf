@@ -26,7 +26,7 @@ resource "aws_security_group" "public_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   egress {
     description = "Allow SSH to Private Subnet"
     from_port   = 22
