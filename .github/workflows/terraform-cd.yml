@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: read
-  id-token: write
 
 concurrency:
   group: cd-${{ github.ref_name }}
@@ -58,10 +57,9 @@ jobs:
           soft_fail: false
 
   plan:
-    name: "Plan (${{ github.ref_name == 'main' && 'production' || 'dev' }})"
+    name: "Plan"
     runs-on: ubuntu-latest
     needs: security
-    environment: ${{ github.ref_name == 'main' && 'production' || 'dev' }}
 
     steps:
       - name: Checkout code
@@ -75,11 +73,12 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Terraform Init
-        run: terraform init -input=false -backend-config="key=${{ github.ref_name == 'main' && 'production' || 'dev' }}/terraform.tfstate"
+        run: terraform init -input=false
 
       - name: Terraform Plan
         run: |
@@ -92,15 +91,14 @@ jobs:
       - name: Upload tfplan artifact
         uses: actions/upload-artifact@v4
         with:
-          name: tfplan-${{ github.ref_name == 'main' && 'production' || 'dev' }}
+          name: tfplan
           path: tfplan
           retention-days: 1
 
   apply:
-    name: "Apply (${{ github.ref_name == 'main' && 'production' || 'dev' }})"
+    name: "Apply"
     runs-on: ubuntu-latest
     needs: plan
-    environment: ${{ github.ref_name == 'main' && 'production' || 'dev' }}
 
     steps:
       - name: Checkout code
@@ -114,16 +112,17 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Terraform Init
-        run: terraform init -input=false -backend-config="key=${{ github.ref_name == 'main' && 'production' || 'dev' }}/terraform.tfstate"
+        run: terraform init -input=false
 
       - name: Download tfplan artifact
         uses: actions/download-artifact@v4
         with:
-          name: tfplan-${{ github.ref_name == 'main' && 'production' || 'dev' }}
+          name: tfplan
 
       - name: Terraform Apply
         run: terraform apply -auto-approve -input=false tfplan
