@@ -1,11 +1,15 @@
-# Local .terraform directories
-**/.terraform/*
-
-# .tfstate files
+# Terraform state - khong push len GitHub
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
 *.tfstate
 *.tfstate.*
 
-# Crash log files
-crash.log
+# tfvars co the chua thong tin nhay cam
+terraform.tfvars
 
-*.tfvars
+# OS
+.DS_Store
+
+*.pem
