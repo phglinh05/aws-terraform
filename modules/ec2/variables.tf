@@ -17,3 +17,7 @@ variable "private_sg_id" {
   description = "ID cua SecGroup (module security-group) cho Private EC2"
   type        = string
 }
+variable "key_name" {
+  description = "Ten key pair de SSH vao EC2"
+  type        = string
+}
